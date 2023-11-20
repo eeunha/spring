@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 스프링 설정 파일 - beans - <bean> : 자바 객체 1개 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- 스프링이 관리하는 객체 > Spring Bean Pen p1 = new Pen(); //패키지명까지 다 적기 -->
+
+	<!-- 빈 등록 > 스프링이 관리하는 대상 등록. 설정만 해둔 것 -->
+	<bean id="pen" class="com.test.spring.di02.Pen"></bean>
+
+	<bean id="brush" name="b1 b2 b3 myBrush"
+		class="com.test.spring.di02.Brush"></bean> <!-- 이름은 여러개 가능 -->
+
+
+	<!-- 아까 구현 > 순수 자바로 구현한 DI 지금 구현 > Spring이 지원하는 DI 구현 > Spring DI //참조 속성에 
+		아까 만든 id 넣기 -->
+	<bean id="hong" class="com.test.spring.di02.Hong">
+		<constructor-arg ref="pen"></constructor-arg>
+	</bean>
+
+
+	<!-- Park > (의존) > Choi > (의존) > Brush set 지우고 맨 앞을 소문자로 변경 -->
+	<!-- <bean class="com.test.spring.di02.Park"> <constructor-arg> <bean class="com.test.spring.di02.Choi"> 
+		<property name="brush"> <bean class="com.test.spring.di02.Brush"></bean> 
+		</property> </bean> </constructor-arg> </bean> -->
+
+	<bean class="com.test.spring.di02.Brush"></bean>
+	
+	<bean id="choi" class="com.test.spring.di02.Choi">
+		<property name="brush" ref="brush"></property> <!-- name은 setter고 ref는 위에서 생성된 bean이다. -->
+	</bean>
+
+	<bean id="park" class="com.test.spring.di02.Park">
+		<constructor-arg ref="choi"></constructor-arg>
+	</bean>
+
+</beans>
