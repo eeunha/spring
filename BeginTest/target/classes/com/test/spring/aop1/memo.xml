@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+        
+    <!-- 
+    	Spring AOP 
+    	
+    	주 업무 객체 > MemoImpl
+    	보조업무 객체 > Logger
+    	
+    	MemoImpl + Logger > 결합!!
+    	
+    	***** 스프링이 특정 객체(클래스)를 인지하려며.. 반드시(!!!) <bean>으로 선언해야 한다.	
+    -->    
+    
+    <!-- 주업무 객체 -->
+    <bean id="memo" class="com.test.spring.aop1.MemoImpl"></bean>
+        
+    <!-- 보조업무 객체 -->
+    <bean id="logger" class="com.test.spring.aop1.Logger"></bean>
+    
+    <!-- 주업무 객체 + 보조업무 객체 :: AOP -->
+	<aop:config>
+		
+		<!-- 보조업무를 담당할 객체를 지정: 역할 지정 -->
+		<aop:aspect id="loggerAspect" ref="logger">
+			
+			<!-- 
+				PointCut 지정하기
+				- 주 업무 객체 지정 > 메소드 찾기
+				
+				MemoImpl.add 메서드
+				MemoImpl.read 메서드
+				
+				AspectJ 표현식 사용해서 찾는다.
+				- execution() 지시자 > 주로 사용
+				- within() 지시자
+				
+				execution()
+				- execution([접근지정자] 반환형 [클래스].메서드(인자))
+				- execution(public void com.test.spring.aop1.MemoImpl.add(String))
+				
+				- *		: 와일드카드(접근지정자, 반환형, 패키지, 클래스, 메서드)
+				- ..	: 와일드카드(인자)
+				
+			 -->
+			 <aop:pointcut expression="execution(public void com.test.spring.aop1.MemoImpl.add(String))" id="p1"/>
+			 
+			 <aop:pointcut expression="execution(public String com.test.spring.aop1.MemoImpl.read(int))" id="p2"/>
+			 
+			 <!-- 가능하나 잘 안씀 -->
+			 <aop:pointcut expression="execution(public String com.test.spring.aop1.MemoImpl.read(int)) || execution(public void com.test.spring.aop1.MemoImpl.add(String))" id="p3"/>
+
+			 <!-- 보조업무객체와의 같은 패키지 내에는 패키지명 생략 가능 -->
+			 <aop:pointcut expression="execution(public void add(String))" id="p4"/> 
+			
+			<!-- 해당 클래스 내부의 모든 메소드, 모든 인자 => 모든 메소드 다 찾아라 -->
+			 <aop:pointcut expression="execution(* com.test.spring.aop1.MemoImpl.*(..))" id="p5"/> 
+
+			 <aop:pointcut expression="execution(* com.test.spring.aop1.MemoImpl.a*(..))" id="p6"/> 
+
+
+			<!-- 
+				보조업무 객체(Logger) + 포인트컷(MemoImpl.add)
+				- 결합 > 위빙(Weaving) > 5종류 Advice 중 하나 구현
+				
+				보조업무객체 메소드 이름, pointcut id
+
+				after -> 주업무 후 보조업무 해주세요
+				before -> 주업무 전 보조업무 해주세요
+			 -->
+			 <!-- <aop:after method="log" pointcut-ref="p1"/> -->
+			 <!-- <aop:before method="log" pointcut-ref="p1"/> -->
+
+			 <!-- <aop:after method="log" pointcut-ref="p1"/>
+			 <aop:after method="log" pointcut-ref="p2"/> -->
+
+			 <!-- 이렇게 많이 쓴다 -->
+			 <!-- <aop:after method="log" pointcut-ref="p3"/> --> 
+			 
+			 <!-- <aop:after method="log" pointcut-ref="p4"/> -->
+
+			 <!-- <aop:after method="log" pointcut-ref="p5"/> -->
+			 
+			 <!-- p1 실행 직전~직후 -->
+			 <!-- <aop:around method="time" pointcut-ref="p1"/>  -->
+			 
+			 <!-- returning = history 메소드의 매개변수 이름 -->
+			 <!-- <aop:after-returning method="history" pointcut-ref="p2" returning="memo"/> -->
+			 
+			 <!-- check 메소드의 매개변수 e -->
+			 <aop:after-throwing method="check" pointcut-ref="p2" throwing="e"/>
+
+		</aop:aspect>
+		
+	</aop:config>
+	
+    
+</beans>
