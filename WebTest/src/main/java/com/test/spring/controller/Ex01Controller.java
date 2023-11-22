@@ -32,7 +32,7 @@ public class Ex01Controller implements Controller {
 		request.setAttribute("name", "홍길동");
 		mv.addObject("age", 20); //권장
 		
-		return mv;
+		return mv; //forward();
 	}
 
 }
