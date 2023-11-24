@@ -3,6 +3,117 @@
 
 <mapper namespace="mybatis">
 	<insert id="add" parameterType="com.test.domain.MyBatisDTO"> <!-- 메소드 이름과 동일하게 짓기 -->
-		insert into tblMyBatis (seq, name, age, address, gender) values (seqMyBatis.nextVal,#{name}, #{age}, #{address}, #{gender})
+		insert into tblMyBatis (seq, name, age, address, gender) values
+		(seqMyBatis.nextVal,#{name}, #{age}, #{address}, #{gender})
 	</insert> <!-- DTO의 멤버변수 이름과 같으나 사실 getter 메소드를 가져온 것. -->
+
+	<update id="m1"> <!-- 아이디와 메소드명 통일시키기 -->
+		update tblMyBatis set age = age + 1
+	</update>
+
+	<delete id="m2" parameterType="String">	<!-- seq의 자료형 적기 -->
+		delete from tblMyBatis where seq = #{seq} <!-- 변수명 통일 -->
+	</delete>
+
+	<insert id="m3" parameterType="com.test.domain.MyBatisDTO">
+		insert into tblMyBatis (seq, name,
+		age, address, gender) values (seqMyBatis.nextVal, #{name}, #{age},
+		#{address}, #{gender})
+	</insert>
+
+	<update id="m4" parameterType="java.util.HashMap">
+		update tblMyBatis set address = #{address} where seq = #{seq} <!-- map.put의 
+			이름 -->
+	</update>
+
+	<!-- template.selectOne("m5") -->
+	<select id="m5" resultType="Integer"> <!-- 클래스 타입으로 반환 값 지정 -->
+		select count(*) from tblMyBatis
+	</select>
+
+	<select id="m6" parameterType="String"
+		resultType="com.test.domain.MyBatisDTO">
+		select * from tblMyBatis where seq = #{seq}
+	</select>
+
+	<!-- select + N행 = resultType > 1행의 자료형만 기재(***) -->
+	<!-- template.selectList("m7") > resultType만으로는 구분할 수 없지만 부른 메소드명으로 구분이 
+		가능하다. -->
+	<select id="m7" resultType="String"> <!-- java.util.List 아니다. -->
+		select name from tblMyBatis
+	</select>
+
+	<select id="m8" resultType="com.test.domain.MyBatisDTO"> <!-- 한줄 담을 것으로 반환값 지정 -->
+		select * from tblMyBatis
+	</select>
+
+	<!-- ORA-00903: invalid table name select count(*) from 'employees' #{key} 
+		> 데이터 바인딩(자료형에 따라 표기가 달라짐) ${key} > 식별자 바인딩(테이블명, 컬럼명 등) -->
+	<select id="m9" parameterType="String" resultType="Integer">
+		select
+		count(*) from ${table}
+	</select>
+
+	<!-- <select id="m10" resultType="Integer"> select count(*) from tblMyBatis 
+		where age &lt;= 25 <를 &lt; 로 사용하기 </select> -->
+
+	<select id="m10" resultType="Integer">
+		select count(*) from tblMyBatis
+
+		<!-- 이렇게 쓰면 escape한거라고 생각하자. -->
+		<![CDATA[
+			WHERE AGE <= 23   
+		]]>
+
+		<!-- 이렇게 써도 됨 -->
+		<!-- <![CDATA[ select count(*) from tblMyBatis WHERE AGE <= 23 ]]> -->
+
+	</select>
+
+	<select id="m11" parameterType="String"
+		resultType="com.test.domain.MyBatisDTO">
+		select * from tblMyBatis
+		where address like '%' || #{word} || '%'
+		<!-- where address like '%${word}%' --> <!-- 얘도 가능 -->
+	</select>
+
+	<select id="m12" parameterType="String" resultType="String">
+
+		<!-- <if test="type == 1"> select first_name from employees </if> <if test="type 
+			== 2"> select last_name from employees </if> -->
+
+		select
+		<if test="type==1">first_name</if>
+		<if test="type==2">last_name</if>
+		from employees
+	</select>
+
+	<select id="m13" parameterType="java.util.HashMap" resultType="com.test.domain.MyBatisDTO">
+		select * from tblMyBatis
+		where
+		<!-- <if test="column=='name'">
+			name = #{word}
+		</if>
+
+		<if test="column=='address'">
+			address like '%' || #{word} || '%'
+		</if>
+
+		<if test="column=='age'">
+		<![CDATA[
+			age <= #{word}]]>
+		</if> -->
+		
+		<choose>
+			<when test="column=='name'">
+				name = #{word}
+			</when>
+			<when test="column=='address'">
+				address like '%' || #{word} || '%'
+			</when>
+			<otherwise>
+				<![CDATA[age <= #{word}]]>
+			</otherwise>
+		</choose>
+	</select>
 </mapper>
