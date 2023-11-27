@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	<!-- 
+		Tiles에서는 컨트롤러의 반환값(문자열)이 definition의 이름을 뜻한다.
+	
+		definition의 template > 레이아웃 페이지
+	 -->
+	<!-- <definition name="test" template="/WEB-INF/views/test.jsp">
+	
+		조각 페이지(attribute) 선언
+		<put-attribute name="main_menu" value="/WEB-INF/inc/main_menu.jsp"></put-attribute>
+	</definition> -->
+	
+	<!-- template 페이지는 views/layout 에 모두 담아놓고 사용한다. -->
+	<!-- 
+		지우지 않고 남기는 이유
+		- index와 나머지 페이지는 화면이 다르다.
+		- 입력받는 단어가 1개밖에 없다.
+	 -->
+	<definition name="index" template="/WEB-INF/views/layout/index.jsp">
+		<put-attribute name="asset" value="/WEB-INF/inc/asset.jsp"></put-attribute>
+		<put-attribute name="main_menu" value="/WEB-INF/inc/main_menu.jsp"></put-attribute>
+	</definition>
+	
+	<!-- <definition name="info" template="/WEB-INF/views/layout/member.jsp">
+		<put-attribute name="asset" value="/WEB-INF/inc/asset.jsp"></put-attribute>
+		<put-attribute name="main_menu" value="/WEB-INF/inc/main_menu.jsp"></put-attribute>
+		<put-attribute name="member_menu" value="/WEB-INF/inc/member_menu.jsp"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/views/member/info.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="history" template="/WEB-INF/views/layout/member.jsp">
+		<put-attribute name="asset" value="/WEB-INF/inc/asset.jsp"></put-attribute>
+		<put-attribute name="main_menu" value="/WEB-INF/inc/main_menu.jsp"></put-attribute>
+		<put-attribute name="member_menu" value="/WEB-INF/inc/member_menu.jsp"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/views/member/history.jsp"></put-attribute>
+	</definition>
+
+	<definition name="favorite" template="/WEB-INF/views/layout/member.jsp">
+		<put-attribute name="asset" value="/WEB-INF/inc/asset.jsp"></put-attribute>
+		<put-attribute name="main_menu" value="/WEB-INF/inc/main_menu.jsp"></put-attribute>
+		<put-attribute name="member_menu" value="/WEB-INF/inc/member_menu.jsp"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/views/member/favorite.jsp"></put-attribute>
+	</definition> -->
+	
+	<!-- <definition name="log" template="/WEB-INF/views/layout/admin.jsp">
+		<put-attribute name="asset" value="/WEB-INF/inc/asset.jsp"></put-attribute>
+		<put-attribute name="main_menu" value="/WEB-INF/inc/main_menu.jsp"></put-attribute>
+		<put-attribute name="admin_menu" value="/WEB-INF/inc/admin_menu.jsp"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/views/admin/log.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="setting" template="/WEB-INF/views/layout/admin.jsp">
+		<put-attribute name="asset" value="/WEB-INF/inc/asset.jsp"></put-attribute>
+		<put-attribute name="main_menu" value="/WEB-INF/inc/main_menu.jsp"></put-attribute>
+		<put-attribute name="admin_menu" value="/WEB-INF/inc/admin_menu.jsp"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/views/admin/setting.jsp"></put-attribute>
+	</definition> -->
+	
+	
+	<!-- 
+		member -> 하나로 통합하기. 
+		* -> 매개변수  세 개의 요청이 다 얘 혼자 받음. 
+		{1} -> 넘어온 단어를 받아와라. history 호출 -> history 단어.
+		
+		대개 메뉴 하나당 definition 하나로 사용.
+		
+		시각적으로 같다면 하나로 합친다.
+	-->
+	<!-- <definition name="*.*" template="/WEB-INF/views/layout/member.jsp">   얘도 가능-->
+	<!-- <definition name="member.*" template="/WEB-INF/views/layout/member.jsp">
+		<put-attribute name="asset" value="/WEB-INF/inc/asset.jsp"></put-attribute>
+		<put-attribute name="main_menu" value="/WEB-INF/inc/main_menu.jsp"></put-attribute>
+		<put-attribute name="member_menu" value="/WEB-INF/inc/member_menu.jsp"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/views/member/{1}.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="admin.*" template="/WEB-INF/views/layout/admin.jsp">
+		<put-attribute name="asset" value="/WEB-INF/inc/asset.jsp"></put-attribute>
+		<put-attribute name="main_menu" value="/WEB-INF/inc/main_menu.jsp"></put-attribute>
+		<put-attribute name="admin_menu" value="/WEB-INF/inc/admin_menu.jsp"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/views/admin/{1}.jsp"></put-attribute>
+	</definition> -->
+	
+	<!-- 위의 두개를 하나로 합치기 -->
+	<definition name="*.*" template="/WEB-INF/views/layout/layout.jsp">
+		<put-attribute name="asset" value="/WEB-INF/inc/asset.jsp"></put-attribute>
+		<put-attribute name="main_menu" value="/WEB-INF/inc/main_menu.jsp"></put-attribute>
+		<put-attribute name="sub_menu" value="/WEB-INF/inc/{1}_menu.jsp"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp"></put-attribute>
+	</definition>
+</tiles-definitions>
