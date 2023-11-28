@@ -2,4 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="file">
 
+	<insert id="add" parameterType="com.test.file.model.PlaceDTO">
+		insert into tblPlace (seq, subject, content, regdate) values (seqPlace.nextVal, #{subject}, #{content}, default)
+	</insert>
+	
+	<select id="seq" resultType="Integer">
+		select max(seq) from tblPlace
+	</select>
+	
+	<insert id="picadd" parameterType="com.test.file.model.PicDTO">
+		insert into tblPic (seq, filename, pseq) values (seqPic.nextVal, #{filename}, #{pseq})
+	</insert>
+	
+	<select id="list" resultType="com.test.file.model.PlaceDTO">
+		select a.*, (select count(*) from tblPic where pseq = a.seq) as picCount from tblPlace a order by seq desc
+	</select>
+	
+	<select id="get" parameterType="String" resultType="com.test.file.model.PlaceDTO">
+		select * from tblPlace where seq = #{seq}
+	</select>
+	
+	<select id="plist" parameterType="String" resultType="com.test.file.model.PicDTO">
+		select * from tblPic where pseq = #{seq}
+	</select>
 </mapper>
