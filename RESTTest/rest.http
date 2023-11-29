@@ -1,0 +1,22 @@
+
+GET http://localhost:8090/rest/m1.do
+
+###
+
+GET http://localhost:8090/rest/m2.do
+
+###
+
+GET http://localhost:8090/rest/m3.do
+
+###
+
+POST http://localhost:8090/rest/address HTTP/1.1
+Content-Type: application/json; charset=UTF-8
+
+{
+    name: "황은하",
+    age: 20,
+    gender: "f",
+    address: "인천시 부평구"
+}
