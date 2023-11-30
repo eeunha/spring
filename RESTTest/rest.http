@@ -15,8 +15,8 @@ POST http://localhost:8090/rest/address HTTP/1.1
 Content-Type: application/json; charset=UTF-8
 
 {
-    name: "황은하",
-    age: 20,
-    gender: "f",
-    address: "인천시 부평구"
+    "name": "황용하",
+    "age": 22,
+    "gender": "m",
+    "address": "인천시 부평구"
 }
