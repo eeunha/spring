@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.test.mapper.TestMapper"> <!-- 얘를 호출한 인터페이스 경로 적기 -->
+
+	<select id="getTime2" resultType="String"> <!-- 추상메소드의 이름 적기 -->
+		select sysdate from dual
+	</select>
+	
+</mapper>
