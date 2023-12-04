@@ -26,17 +26,18 @@ public class ChatServer {
 
 		sessionList.add(session); // 현재 접속자의 정보를 배열에 추가
 
-		//현재 대화방에 누가 있는지?
+		// 현재 대화방에 누가 있는지?
 		checkSessionList();
-		
-		//대화방에 혹시라도 연결이 끊긴 사람이 있으면 제거!
+
+		// 대화방에 혹시라도 연결이 끊긴 사람이 있으면 제거!
 		clearSessionList();
 	}
 
 	// 클라이언트로부터 메시지 전달 받음
 	@OnMessage
 	public void handleMessage(String msg, Session session) { // session -> 지금 메시지를 보낸 사람의 세션
-//		System.out.println(msg);
+
+		// System.out.println(msg);
 
 		// JSON 형식의 문자열 -> 자바 클래스 객체로 변환
 		Gson gson = new Gson();
@@ -73,6 +74,32 @@ public class ChatServer {
 					e.printStackTrace();
 				}
 			}
+		} else if (message.getCode().equals("3")) {
+
+			// 대화 메시지 전송
+			// - 보낸 사람 빼고 나머지 사람에게 전달
+			for (Session s : sessionList) {
+				if (s != session) { // 보낸 사람 빼고
+					try {
+						s.getBasicRemote().sendText(msg); // message 객체
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		} else if (message.getCode().equals("4")) {
+
+			// 이모티콘 전송
+			// - 보낸 사람 빼고 나머지 사람에게 전달
+			for (Session s : sessionList) {
+				if (s != session) { // 보낸 사람 빼고
+					try {
+						s.getBasicRemote().sendText(msg); // message 객체
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
 		}
 	}
 
@@ -100,8 +127,8 @@ public class ChatServer {
 
 		while (iter.hasNext()) {
 			if (!(iter.next()).isOpen()) {
-				//혹시 연결이 끊어진 세션이 있으면..
-				iter.remove(); //리스트에서 제거
+				// 혹시 연결이 끊어진 세션이 있으면..
+				iter.remove(); // 리스트에서 제거
 			}
 		}
 	}

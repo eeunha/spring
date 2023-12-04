@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.test.domain.AddressDTO;
 import com.test.persistence.AddressDAO;
 
-//@RestController > 요청 메서드의 반호나값에 자동으로 @ResponseBody가 적용된다.
+//@RestController > 요청 메서드의 반환값에 자동으로 @ResponseBody가 적용된다.
 @RestController
 public class RESTController {
 
