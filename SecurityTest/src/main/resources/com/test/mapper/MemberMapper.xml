@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.test.mapper.MemberMapper">
+
+	<insert id="add" parameterType="com.test.domain.MemberDTO">
+		insert into tblMember (userid, userpw, username) values (#{userid}, #{userpw}, #{username})
+	</insert>
+	
+	<insert id="addAuth" parameterType="com.test.domain.AuthDTO">
+		insert into tblAuth (userid, auth) values (#{userid}, #{auth}) 
+	</insert>
+	
+	
+	<resultMap type="com.test.domain.MemberDTO" id="memberMap">
+		<id property="userid" column="userid" /> <!-- 매핑정보. table의 userid를 dto의 userid(property)로 연결할게 -->
+		<result property="userpw" column="userpw" /> <!-- pk인 id를 제외한 나머지 컬럼은 result로 적기 -->
+		<result property="username" column="username" />
+		<result property="enabled" column="enabled" />
+		<result property="regdate" column="regdate" />
+		<collection property="authlist" resultMap="AuthMap"></collection> <!-- 권한은 여러개여서 배열로 매핑. dto의 authlist를 property로 지정 -->
+	</resultMap>
+	
+	<resultMap type="com.test.domain.AuthDTO" id="AuthMap"> <!-- Auth 테이블을 담기 위한 DTO -->
+		<result property="userid" column="userid"></result> <!-- pk가 없어서 바로 result로 생성 -->
+		<result property="auth" column="auth"></result>
+	</resultMap> 
+	
+	<select id="read" resultMap="memberMap">
+		select m.userid, m.userpw, m.username, m.enabled, m.regdate, a.auth
+		from tblMember m 
+    		left outer join tblAuth a
+    		on m.userid = a.userid
+		where m.userid = #{userid}
+	</select> <!-- username을 넘겨왔지만 사실은 userid이기 때문에 userid로 사용함. -->
+</mapper>

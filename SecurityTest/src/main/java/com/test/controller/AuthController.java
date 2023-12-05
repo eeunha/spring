@@ -25,4 +25,10 @@ public class AuthController {
 
 		return "auth/mylogout";
 	}
+
+	@GetMapping(value = "/auth/myinfo.do")
+	public String myinfo(Model model) {
+
+		return "auth/myinfo";
+	}
 }

@@ -9,6 +9,13 @@
 	<bean id="customLoginSuccess"
 		class="com.test.security.CustomLoginSuccessHandler"></bean>
 
+	<!-- 암호 인코딩 객체 -->
+	<bean id="bcryptPasswordEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
+	
+	<!-- 사용자 로그인 객체 -->	
+	<bean id="customUserDetailsService" class="com.test.security.CustomUserDetailsService"></bean>
+
 	<!-- 폼 로그인 방식으로 보안을 구성하겠습니다. -->
 	<security:http>
 		<!-- 어떤 경로 + 어떤 권한 -->
@@ -27,10 +34,12 @@
 		<!-- 사용자 정의 로그인 페이지 호출 -->
 		<!-- <security:form-login login-page="auth/mylogin.do" /> -->
 
-		<security:form-login login-page="/auth/mylogin.do" authentication-success-handler-ref="customLoginSuccess" />
-		
+		<security:form-login login-page="/auth/mylogin.do"
+			authentication-success-handler-ref="customLoginSuccess" />
+
 		<!-- 로그아웃 처리 -->
-		<security:logout logout-url="/auth/mylogout.do" logout-success-url="/index.do" invalidate-session="true"/> 
+		<security:logout logout-url="/auth/mylogout.do"
+			logout-success-url="/index.do" invalidate-session="true" />
 
 		<!-- 403 페이지 처리 -->
 		<security:access-denied-handler
@@ -38,12 +47,21 @@
 	</security:http>
 
 	<!-- 계정 관리 매니저(회원 아이디/비번/권한등급) -->
-	<security:authentication-manager>
+	<!-- <security:authentication-manager>
 		<security:authentication-provider>
 			<security:user-service>
-				<security:user name="hong" password="{noop}1111" authorities="ROLE_MEMBER" />
-				<security:user name="admin" password="{noop}1111" authorities="ROLE_ADMIN, ROLE_MEMBER" />
+				<security:user name="hong" password="{noop}1111"
+					authorities="ROLE_MEMBER" />
+				<security:user name="admin" password="{noop}1111"
+					authorities="ROLE_ADMIN, ROLE_MEMBER" />
 			</security:user-service>
 		</security:authentication-provider>
+	</security:authentication-manager> -->
+	
+	<security:authentication-manager>
+		<security:authentication-provider user-service-ref="customUserDetailsService"> <!-- 오라클 반영한 인증 정보. customUserDetailsService 얘한테 맡긴다. -->
+			<security:password-encoder ref="bcryptPasswordEncoder"/> <!-- 인코더 -->
+		</security:authentication-provider>
 	</security:authentication-manager>
+	
 </beans>
