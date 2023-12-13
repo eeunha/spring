@@ -20,3 +20,15 @@ create table tblAuth (
     constraint fk_member_auth foreign key(userid) references tblMember(userid)
 );
 
+select * from tblMember;
+select * from tblAuth;
+
+insert into tblAuth (userid, auth) values ('lion', 'ROLE_MEMBER'); 
+
+commit;
+
+select m.userid, m.userpw, m.username, m.enabled, m.regdate, a.auth
+from tblMember m 
+    left outer join tblAuth a
+    on m.userid = a.userid
+where m.userid = 'lion';
