@@ -21,4 +21,8 @@
 		insert into tblBook (seq, title, link, description, image, author, discount, publisher, isbn, pubdate) values ((select max(seq) + 1 from tblBook), #{title}, #{link}, #{description}, #{image}, #{author}, #{discount}, #{publisher}, #{isbn}, #{pubdate})
 	</insert>
 	
+	<select id="getSeq" resultType="String">
+		select max(seq) from tblBook
+	</select>
+	
 </mapper>

@@ -12,4 +12,6 @@ public interface ProjectMapper {
 
 	void add(BookDTO dto);
 
+	String getSeq();
+
 }

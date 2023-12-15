@@ -12,4 +12,6 @@ public interface BookDAO {
 
 	void add(BookDTO dto);
 
+	String getSeq();
+
 }

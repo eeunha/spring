@@ -52,9 +52,17 @@
 		Book Project <small>List</small>
 	</h1>
 
-	<div>
-		<button type="button" class="add"
-			onclick="location.href='/project/add.do';">도서추가하기</button>
+	<div class="seperate">
+		<div>
+			<button type="button" class="add" onclick="location.href='/project/add.do';">도서추가하기</button>
+			<button type="button" class="list" onclick="location.href='/project/list.do';">결과초기화</button>
+		</div>
+		<div>
+			<form method="GET" action="/project/list.do">
+				<input type="text" name="word" class="middle" required placeholder="제목 검색" value="${word}"> 
+				<input type="submit" value="검색하기">
+			</form>
+		</div>
 	</div>
 
 	<table id="list">

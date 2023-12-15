@@ -112,4 +112,11 @@ insert into tblBook (seq, title, link, description, image, author, discount, pub
 insert into tblBook (seq, title, link, description, image, author, discount, publisher, isbn, pubdate) values (99, '자바스크립트 보안', 'https://search.shopping.naver.com/book/catalog/32485026971', '[자바스크립트 보안]은 자바스크립트를 사용하면서 생길 수 있는 보안 약점 또는 취약점들의 기본에 대해 설명한다. 이미 멀리 알려진 크로스 사이트 스크립팅, 크로스 사이트 요청 위조와 같은 취약점들의 개념 설명과 완벽한 이해를 위한 실습 과정이 포함되어 있다.', 'https://shopping-phinf.pstatic.net/main_3248502/32485026971.20220527032113.jpg', 'Y.E 리앙', 10710, '한빛미디어', '9788968488078', '20151217');
 insert into tblBook (seq, title, link, description, image, author, discount, publisher, isbn, pubdate) values (100, '자바 7 실무 바이블 (고급 프로그래머가 알아야 할 프로젝트 자바)', 'https://search.shopping.naver.com/book/catalog/32489132269', '『자바 7 실무 바이블』는 오라클 사의 최신 자바 언어와 플랫폼 그리고 고급 자바 개발자가 되기 위해 알아야 할 많은 API와 도구들에 관한 가이드를 제공한다. 저자인 제프 프리슨은 먼저 자바 언어에 관한 포괄적인 가이드를 제시하고 JDK와 NetBean을 사용해 프로그래밍하는 방법을 보여준다. 또한 동시성, 참조, 리플렉션, 문자열 조작, 스레드, 콜렉션 등을 포함한 주요 API에 대해 소개한다.', 'https://shopping-phinf.pstatic.net/main_3248913/32489132269.20220527085255.jpg', 'Jeff Friesen', 10000,  '길벗', '9788966184583', '20121017');
 
+select * from tblBook;
+
+---
+
+select * from tblBook order by seq desc;
+delete from tblBook where seq = 101;
+
 commit;

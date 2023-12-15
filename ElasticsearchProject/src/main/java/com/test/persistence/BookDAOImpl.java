@@ -31,4 +31,10 @@ public class BookDAOImpl implements BookDAO{
 
 		mapper.add(dto);
 	}
+	
+	@Override
+	public String getSeq() {
+
+		return mapper.getSeq();
+	}
 }
